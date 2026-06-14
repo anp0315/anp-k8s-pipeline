@@ -3,18 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Check Minikube') {
-            steps {
-                bat 'where minikube'
-                bat 'minikube version'
-            }
-        }
-
-        pipeline {
-    agent any
-
-    stages {
-
         stage('Check User') {
             steps {
                 bat 'whoami'
@@ -23,15 +11,12 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Check Minikube') {
             steps {
-                bat 'docker build -t rf-app:latest .'
+                bat 'where minikube'
+                bat 'minikube version'
             }
         }
-
-        // rest of your stages...
-    }
-}
 
         stage('Build Docker Image') {
             steps {
@@ -47,16 +32,14 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                bat '''
-                kubectl delete job rf-test-job --ignore-not-found=true
-                kubectl apply -f k8s/job.yaml
-                '''
+                bat 'kubectl delete job rf-test-job --ignore-not-found=true'
+                bat 'kubectl apply -f k8s/job.yaml'
             }
         }
 
         stage('Get Logs') {
             steps {
-                bat 'kubectl logs job/rf-test-job'
+                bat 'kubectl logs -l job-name=rf-test-job'
             }
         }
     }
