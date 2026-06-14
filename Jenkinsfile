@@ -3,6 +3,13 @@ pipeline {
 
     stages {
 
+        stage('Check Minikube') {
+            steps {
+                bat 'where minikube'
+                bat 'minikube version'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t rf-app:latest .'
