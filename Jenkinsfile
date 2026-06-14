@@ -10,6 +10,29 @@ pipeline {
             }
         }
 
+        pipeline {
+    agent any
+
+    stages {
+
+        stage('Check User') {
+            steps {
+                bat 'whoami'
+                bat 'echo %USERPROFILE%'
+                bat 'minikube profile list'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t rf-app:latest .'
+            }
+        }
+
+        // rest of your stages...
+    }
+}
+
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t rf-app:latest .'
