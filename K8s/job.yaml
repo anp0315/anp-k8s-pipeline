@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: rf-test-job
+
+spec:
+  template:
+    spec:
+      containers:
+      - name: rf-container
+        image: rf-app:latest
+        imagePullPolicy: Never
+        command: ["robot", "tests"]
+
+      restartPolicy: Never
+
+  backoffLimit: 0
