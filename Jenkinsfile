@@ -5,19 +5,19 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t rf-app:latest .'
+                bat 'docker build -t rf-app:latest .'
             }
         }
 
         stage('Load Image to Minikube') {
             steps {
-                sh 'minikube image load rf-app:latest'
+                bat 'minikube image load rf-app:latest'
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh '''
+                bat '''
                 kubectl delete job rf-test-job --ignore-not-found=true
                 kubectl apply -f k8s/job.yaml
                 '''
@@ -26,7 +26,7 @@ pipeline {
 
         stage('Get Logs') {
             steps {
-                sh 'kubectl logs job/rf-test-job'
+                bat 'kubectl logs job/rf-test-job'
             }
         }
     }
