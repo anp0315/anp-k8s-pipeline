@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'YOUR_GITHUB_REPO_URL'
+                git branch: 'main', url: 'https://github.com/anp0315/anp-k8s-pipeline.git'
             }
         }
 
